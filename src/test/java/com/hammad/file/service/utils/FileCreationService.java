@@ -1,9 +1,14 @@
-package com.hammad.file.service.service;
+package com.hammad.file.service.utils;
 
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,5 +57,35 @@ public class FileCreationService {
                 }
             }
         };
+    }
+
+    @SneakyThrows
+    public static void  setupTestDirectory() {
+        // Define the directory path
+        Path directoryPath = Path.of("./testDirectory");
+        // Create the directory if it doesn't exist
+        Files.createDirectories(directoryPath);
+
+        // Define the file paths within the directory
+        Path filePath1 = directoryPath.resolve("testFile1.txt");
+        Path filePath2 = directoryPath.resolve("testFile2.txt");
+
+        // Create the files
+        Files.createFile(filePath1);
+        Files.createFile(filePath2);
+
+        // Optionally, write some content to the files
+        String content1 = "This is test file 1";
+        String content2 = "This is test file 2";
+        Files.write(filePath1, content1.getBytes());
+        Files.write(filePath2, content2.getBytes());
+    }
+
+    public static void cleanupTestDirectory() {
+        Path directoryPath = Path.of("./testDirectory");
+        if (Files.exists(directoryPath)){
+            FileSystemUtils.deleteRecursively(new File(String.valueOf(directoryPath)));
+        }
+
     }
 }

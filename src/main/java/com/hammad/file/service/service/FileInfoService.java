@@ -12,6 +12,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Iterator;
 
 @Service
 @Log4j2
@@ -24,7 +25,13 @@ public class FileInfoService {
             try {
                 Path startPath = Paths.get(dirPath);
                 try (DirectoryStream<Path> stream = Files.newDirectoryStream(startPath)) {
-                    for (Path path : stream) {
+                    Iterator<Path> iterator = stream.iterator();
+                    if (!iterator.hasNext()) { // Check if the directory stream is empty
+                        fluxSink.complete();
+                        return; // Exit the method early
+                    }
+                    while (iterator.hasNext()) {
+                        Path path = iterator.next();
                         if (!fluxSink.isCancelled()) {
                             BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
                             FileInfo fileInfo = createFileInfo(path, attrs);
