@@ -2,12 +2,12 @@ package com.hammad.file.service.exception;
 
 import java.io.Serial;
 
-public class ResourceNotFoundException extends Exception {
+public class ResourceAccessDeniedException extends Exception {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public ResourceNotFoundException(String msg) {
+    public ResourceAccessDeniedException(String msg) {
         super(msg);
     }
 }

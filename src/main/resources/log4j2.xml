@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Properties>
-        <Property name="log-path">./log/file-service</Property>
+        <Property name="log-path">/home/appuser/app/log/file-service</Property>
     </Properties>
     <Appenders>
         <Console name="CONSOLE" target="SYSTEM_OUT">
             <PatternLayout>
-                <pattern>[%d{MMM dd, yyyy HH:mm:ss,SSS}] [%X{traceId} %X{spanId}] -%c.%M(%L)- %m%n</pattern>
+                <pattern>[%d{MMM dd, yyyy HH:mm:ss,SSS}] %c.%M(%L)- %m%n</pattern>
             </PatternLayout>
         </Console>
-        <RollingRandomAccessFile name="rootFile" fileName="${log-path}/root.log" buffersize="8192" immediateFlush="false"  filePattern="${log-path}/$${date:yyyy-MM}/root-%d{yyyy-MM-dd}-%i.log">
+        <RollingRandomAccessFile name="rootFile" fileName="${log-path}/root.log" buffersize="8192"
+                                 immediateFlush="false"
+                                 filePattern="${log-path}/$${date:yyyy-MM}/root-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout>
-                <pattern>[%d{MMM dd, yyyy HH:mm:ss,SSS}] [%X{traceId} %X{spanId}] %c.%M(%L)- %m%n</pattern>
+                <pattern>[%d{MMM dd, yyyy HH:mm:ss,SSS}] %c.%M(%L)- %m%n</pattern>
             </PatternLayout>
             <Policies>
                 <SizeBasedTriggeringPolicy size="100MB"/>
@@ -20,7 +22,7 @@
         </RollingRandomAccessFile>
     </Appenders>
     <Loggers>
-        <AsyncRoot level="info" includeLocation="true"   additivity="false">
+        <AsyncRoot level="info" includeLocation="true" additivity="false">
             <appender-ref ref="rootFile"/>
             <appender-ref ref="CONSOLE"/>
         </AsyncRoot>

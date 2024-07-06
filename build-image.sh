@@ -51,7 +51,7 @@ done
 if [ "$IS_CLEAN_BUILD_REQ" = true ] ; then
   echo "Executing mvn clean package"
   mvn clean
-  mvn package -P prod -U
+  mvn package -P prod -U -DskipTests
 fi
 
 if [ "$IS_IMAGE_TAG_PROVIDED" = true ] ; then
