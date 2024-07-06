@@ -18,9 +18,9 @@ public class FileInfoController {
     private final FileInfoService fileInfoService;
 
     @GetMapping(path = "/list-files", produces = MediaType.APPLICATION_JSON_VALUE, params = "path")
-    public ResponseEntity<Flux<Object>> listFiles(@RequestParam String path) {
-        log.info("Request to list files in path: {}", path);
-        Flux<Object> fileInfos = fileInfoService.listFiles(path);
+    public ResponseEntity<Flux<Object>> listFiles(@RequestParam String path, @RequestParam(required = false) boolean recursive ){
+        log.atInfo().log("Listing files at {} with recursive {}", path, recursive);
+        Flux<Object> fileInfos = fileInfoService.listFiles(path, recursive);
         return ResponseEntity.ok().body(fileInfos);
     }
 }

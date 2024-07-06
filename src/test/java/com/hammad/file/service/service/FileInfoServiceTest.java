@@ -38,9 +38,9 @@ class FileInfoServiceTest {
     @Test
     @DisplayName("listFiles emits FileInfo objects for valid directory")
     void listFilesEmitsFileInfoForValidDirectory() {
-        when(fileInfoService.listFiles("valid/directory/path")).thenReturn(Flux.just(createMockFileInfo("file1.txt"), createMockFileInfo("file2.txt")));
+        when(fileInfoService.listFiles("valid/directory/path", false)).thenReturn(Flux.just(createMockFileInfo("file1.txt"), createMockFileInfo("file2.txt")));
 
-        StepVerifier.create(fileInfoService.listFiles("valid/directory/path"))
+        StepVerifier.create(fileInfoService.listFiles("valid/directory/path", false))
                 .expectNextCount(2)
                 .verifyComplete();
     }
@@ -48,18 +48,18 @@ class FileInfoServiceTest {
     @Test
     @DisplayName("listFiles completes empty for empty directory")
     void listFilesCompletesEmptyForEmptyDirectory() {
-        when(fileInfoService.listFiles("empty/directory/path")).thenReturn(Flux.empty());
+        when(fileInfoService.listFiles("empty/directory/path", false)).thenReturn(Flux.empty());
 
-        StepVerifier.create(fileInfoService.listFiles("empty/directory/path"))
+        StepVerifier.create(fileInfoService.listFiles("empty/directory/path", false))
                 .verifyComplete();
     }
 
     @Test
     @DisplayName("listFiles emits error for non-existent directory")
     void listFilesEmitsErrorForNonExistentDirectory() {
-        when(fileInfoService.listFiles("non/existent/directory/path")).thenReturn(Flux.error(new NoSuchFileException("non/existent/directory/path")));
+        when(fileInfoService.listFiles("non/existent/directory/path", false)).thenReturn(Flux.error(new NoSuchFileException("non/existent/directory/path")));
 
-        StepVerifier.create(fileInfoService.listFiles("non/existent/directory/path"))
+        StepVerifier.create(fileInfoService.listFiles("non/existent/directory/path", false))
                 .expectError(NoSuchFileException.class)
                 .verify();
     }

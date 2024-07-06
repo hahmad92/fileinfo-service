@@ -73,24 +73,27 @@ docker run -p 8080:8080 -v /d/temp:/home/appuser/temp -d fileinfo-service:latest
 
 ### List Files in a Directory
 
-* **Endpoint**: GET /listFiles/{directoryPath}
+* **Endpoint**: GET /listFiles/path={directoryPath}&recursive={recursive}
+* **Parameters**:
+  * `directoryPath`: The directory path to list files.
+  * `recursive`: A boolean value to list files recursively. Default is false.
 * **Description**: Lists all files in the specified directory path.
+  * If `recursive` is true, lists all files recursively.
+  * If the directory does not exist or is inaccessible, an error message is returned.
+  * If the directory is empty, an empty list is returned.
+  * Hidden entries are included and Symbolic links are **not** followed
 * **Response**: 
   * A list of file information objects with the following attributes:
     * `path`: The file path.
-    * `directory`: A boolean value indicating whether the file is a directory.
     * `sz`: The file size in bytes.
     * `ct`: The creation time of the file in milliseconds since the epoch.
     * `lmt`: The last modified time of the file in milliseconds since the epoch.
-  * Or an error message if the directory does not exist or is
-    inaccessible.
-  * **Example**: `http://localhost:8080/listFiles/C:/Users`
+  * **Example**: `http://localhost:8080/listFiles/path=C:/Users`
   * **Response Example**:
     ```json
     [
       {
       "path": "D:\\temp2\\file0.txt",
-      "directory": false,
       "sz": 0,
       "ct": 1720104035538,
       "lmt": 1720104035538

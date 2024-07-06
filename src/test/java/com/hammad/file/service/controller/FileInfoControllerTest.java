@@ -1,6 +1,5 @@
 package com.hammad.file.service.controller;
 
-import com.hammad.file.service.exception.ResourceNotFoundException;
 import com.hammad.file.service.service.FileInfoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,11 +12,8 @@ import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-;
 
 class FileInfoControllerTest {
 
@@ -38,9 +34,9 @@ class FileInfoControllerTest {
         // Given
         String path = "/valid/path";
         Flux<Object> expectedFiles = Flux.just("file1.txt", "file2.txt");
-        when(fileInfoService.listFiles(eq(path))).thenReturn(expectedFiles);
+        when(fileInfoService.listFiles(eq(path),eq(false))).thenReturn(expectedFiles);
 
-        ResponseEntity<Flux<Object>> response = fileInfoController.listFiles(path);
+        ResponseEntity<Flux<Object>> response = fileInfoController.listFiles(path, false);
 
         assert response.getStatusCode() == HttpStatus.OK;
         StepVerifier.create(response.getBody())
@@ -53,9 +49,9 @@ class FileInfoControllerTest {
     void shouldReturnEmptyListForPathWithNoFiles() {
         String path = "/empty/path";
         Flux<Object> expectedFiles = Flux.empty();
-        when(fileInfoService.listFiles(eq(path))).thenReturn(expectedFiles);
+        when(fileInfoService.listFiles(eq(path), eq(false))).thenReturn(expectedFiles);
 
-        ResponseEntity<Flux<Object>> response = fileInfoController.listFiles(path);
+        ResponseEntity<Flux<Object>> response = fileInfoController.listFiles(path, false);
 
         assert response.getStatusCode() == HttpStatus.OK;
         StepVerifier.create(response.getBody())
@@ -66,9 +62,9 @@ class FileInfoControllerTest {
     @DisplayName("Should return HttpStatus.OK for valid path with no files")
     void shouldReturnHttpStatusOKForValidPathWithNoFiles() {
         String pathWithNoFiles = "/valid/empty/path";
-        when(fileInfoService.listFiles(eq(pathWithNoFiles))).thenReturn(Flux.empty());
+        when(fileInfoService.listFiles(eq(pathWithNoFiles), eq(false))).thenReturn(Flux.empty());
 
-        ResponseEntity<Flux<Object>> response = fileInfoController.listFiles(pathWithNoFiles);
+        ResponseEntity<Flux<Object>> response = fileInfoController.listFiles(pathWithNoFiles, false);
 
         assert response.getStatusCode() == HttpStatus.OK;
         StepVerifier.create(response.getBody())

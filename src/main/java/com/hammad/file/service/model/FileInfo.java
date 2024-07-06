@@ -14,7 +14,6 @@ public class FileInfo {
     private String path;
     @JsonProperty("sz")
     private long size;
-    private boolean isDirectory;
     //Change json property name to ct
     @JsonProperty("ct")
     private long creationTime;
